@@ -30,7 +30,7 @@ class Signals_all(object):
                 CE = float(CE)
                 if self.add_one_file('%s\%s' % (directory_in_str, filename)) != CE:
                     print("CE not match.")
-
+        self.data
         return self.data
 
 

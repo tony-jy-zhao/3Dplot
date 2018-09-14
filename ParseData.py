@@ -6,6 +6,7 @@ __author__ = "JTZ"
 
 import re
 import pandas as pd
+import Draw_2d
 
 _genericDecNum = '[-+]?\d*\.\d+|\d+'
 rx_dict = {
@@ -13,6 +14,7 @@ rx_dict = {
     'Q2RF&Intensity': re.compile(r'(?P<q2rf>%s)[ \t](?P<intensity>%s)' % (_genericDecNum, _genericDecNum))
 }
 
+smooth_flag = True
 
 def _parse_line(line):
     """
@@ -54,8 +56,15 @@ def parse_file(filepath):
         data.set_index(['CE', 'Q2RF'], inplace=True)
         # check for duplicated indexes
         # https://stackoverflow.com/questions/13035764/remove-rows-with-duplicate-indices-pandas-dataframe-and-timeseries
-        data = data.groupby(level=data.index.names).last()
+        data = data.groupby(level=data.index.names)
+
         # .first() || .last()
+        if smooth_flag:
+            data = data.last()
+
+        else:
+            data = data.first()
+
     return data
 
 
